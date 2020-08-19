@@ -1,12 +1,8 @@
-## 08 / 10
+## 08 / 10 | Python 
 
 ![marge simpson episode 10 GIF](https://media0.giphy.com/media/3orieQSoJPS01oCpig/giphy.gif?cid=ecf05e47iywyldilpivm1zj78iqx7iwaompu1e6f5eeomu65&rid=giphy.gif)
 
 
-
-✅ TIL이라기엔 예전에 배운 거 복습하는 데 의미가 더 있다. 
-
-✔ 그래서 제목에 TIL을 적지 않은 것.
 
 
 
