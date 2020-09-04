@@ -8,21 +8,40 @@
 
 
 
-#### Queue의 기본 연산
+#### 1. Queue의 기본 연산
 
 실제로 코딩할 때 아래와 같은 명령어를 사용 ❌, 명칭⭕
 
 - 삽입 : enQueue
 - 삭제 : deQueue
 
-#### Queue의 주요 연산
+#### 2. Queue의 주요 연산
 
 - enQueue() 			: Queue의 뒤쪽(rear 다음)에 원소를 삽입하는 연산
 - deQueue()             : 삭제
 - createQueue()     : 공백 Queue 생성
-- isEmpty()              :
-- isFull()                    :
+- isEmpty()              : 큐가 공백상태인지 확인하는 연산
+- isFull()                    : 큐가 포화상태인지 확인하는 연산
 - Qpeek()                   : 검색. 가장 마지막에 있는 Queue를 반환시킨다
+
+
+
+#### 3. Queue의 기본 연산 과정
+
+![image-20200903133521107](TIL_200902_자료구조_Queue.assets/image-20200903133521107.png)
+
+![image-20200903133737519](TIL_200902_자료구조_Queue.assets/image-20200903133737519.png)
+
+
+
+#### 4. Queue 종류
+
+- 선형 Queue :/
+- 원형 Queue
+- 연결 Queue
+- 우선순위 Queue
+
+
 
 #### 선형 Queue 이용 시 문제점
 
