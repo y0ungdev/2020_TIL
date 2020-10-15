@@ -121,11 +121,11 @@
 
 하지만 '연쇄적'에 매여서 코딩하게 되면 이런 **CallBack Hell**에 빠질 수 있으므로 주의
 
-그래서 Promise ㄷㄷㄷㅈ
+그래서 Promise ㄷㄷㄷㅈ ❗❕
 
 ![image-20201015222932376](TIL_201014_Ajax.assets/image-20201015222932376.png)
 
-- `.then`: 성공한 경우
+- `.then`: 완료한 경우(성공)
 
 - `.catch` : 실패한 경우
 
@@ -144,11 +144,14 @@ async은 비동기로직을 포함한 경우에만 사용이 가능
 #### 🌟 axios 🌟
 
 > Promise based HTTP client for the browser and node.js
+>
+> Promise 기반의 비동기 객체
 
 ``` html
 // example code
 
 axios.get('jsonplacehoder URL 어쩌구')
+// "To.axios.. 저 url로 get 요청 보내줘!"
   .then(function(res){
     console.log(res.data.title)
 })
@@ -156,6 +159,234 @@ axios.get('jsonplacehoder URL 어쩌구')
     console.log(error)
 })
 ```
+
+Bootstrap ⬅ CDN
+
+axios ⬅ 
+
+[axios 공식 Github-installing]: https://github.com/axios/axios
+
+Chaining
+
+##### Source Code 1
+
+``` html
+axios.get('https://jsonplaceholder.typicode.com/todos/asdf')
+      .then(function (res) {
+        console.log(res)
+        return res.data
+      })
+      .then(function (res) {
+        console.log(res)
+        return res.title
+      })
+      .then(function (res) {
+        console.log(res)
+      })
+      // .catch(function (err) {
+      //   console.log(err)
+      // })
+```
+
+![image-20201016001446795](TIL_201014_Ajax.assets/image-20201016001446795.png)
+
+에러를 잡지 못한 상황 ➡  `.catch` 필요함
+
+<hr>
+
+##### index.html
+
+``` html
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="text-center">Articles</h1>
+  <a href="{% url 'articles:create' %}">NEW</a>
+  <hr>
+  {% for article in articles %}
+    <p><b>작성자 : <a href="{% url 'accounts:profile' article.user.username %}">{{ article.user }}</a></b></p>
+    <p>글 번호: {{ article.pk }}</p>
+    <p>글 제목: {{ article.title }}</p>
+    <p>글 내용: {{ article.content }}</p>
+    <form class="d-inline like-form" data-article-id="{{ article.pk }}">
+      {% csrf_token %}
+      {% if user in article.like_users.all %}
+        <button class="btn btn-link">
+          <i id="like-{{ article.pk }}" class="fas fa-heart fa-lg" style="color:crimson;"></i>
+        </button>
+      {% else %}
+        <button class="btn btn-link">
+          <i id="like-{{ article.pk }}" class="fas fa-heart fa-lg" style="color:black;"></i>
+        </button>
+      {% endif %}
+    </form>
+    <p>
+      <span id="like-count-{{ article.pk }}">
+        {{ article.like_users.all|length }} 명이 이 글을 좋아합니다.
+      </span>
+    </p>
+    <a href="{% url 'articles:detail' article.pk %}">[detail]</a>
+    <hr>
+  {% endfor %}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const forms = document.querySelectorAll('.like-form')
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        // console.log(event)
+        const articleId = event.target.dataset.articleId
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        
+  axios.post(`http://127.0.0.1:8000/articles/${articleId}/like/`, {}, {
+          headers: {
+            'X-CSRFToken': csrftoken
+          }}
+        )
+        .then(function (res) {
+          // console.log(res)
+          const count = res.data.count
+          const liked = res.data.liked
+          // console.log(count, liked)
+
+          const likeIconColor = document.querySelector(`#like-${articleId}`)
+          // console.log(likeIconColor)
+          const likeCount = document.querySelector(`#like-count-${articleId}`)
+          // console.log(likeCount)
+
+          likeCount.innerText = `${count} 명이 이 글을 좋아합니다.`
+
+          if (liked) {
+            likeIconColor.style.color = 'crimson'
+          } else {
+            likeIconColor.style.color = 'black'
+          }
+
+        })
+      })
+    })
+  </script>
+{% endblock %}
+
+```
+
+##### views.py
+
+``` python
+@require_POST
+def like(request, article_pk):
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=article_pk)
+        user = request.user
+
+        if article.like_users.filter(pk=user.pk).exists():
+        # if user in article.like_users.all():
+            article.like_users.remove(user)
+            liked = False
+        else:
+            article.like_users.add(user)
+            liked = True
+
+        like_status = {
+            'liked': liked,
+            'count': article.like_users.count(),
+        }
+        return JsonResponse(like_status)
+        # return redirect('articles:index')
+    return redirect('accounts:login')
+
+```
+
+
+
+
+
+① `<form class="d-inline like-form" data-article-id="{{ article.pk }}">` : form에 like-form이라는 이름으로 class를 주었다.
+
+② `const forms = document.querySelectorAll('.like-form')` : like-form 이라는 클래스를 갖는 모든 form을 갖고 오겠다
+
+③ 
+
+``` javascript
+forms.forEach(function (form) {
+    // 이 form은 submit 이벤트가 발생하면 ~~를 실행한다! 
+      form.addEventListener('submit', function (event) {
+          // preventDefault()를 통해 기본으로 설정된 이벤트를 X
+        event.preventDefault()
+        // console.log(event)
+        const articleId = event.target.dataset.articleId
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+```
+
+##### ✅ data attribute html
+
+![image-20201016020231869](TIL_201014_Ajax.assets/image-20201016020231869.png)
+
+④ ``<form class="d-inline like-form" data-article-id="{{ article.pk }}">`에서 `data-article-id` 부분이 위의 Data Attribute HTML에 해당하는 내용이다. `article-id` 부분은 CamelCase로 적용돼서 변환됨(➡ articleId)
+
+⑤ 변수는  ``(backtick)`과 `$` 를 이용해서 표현한다. 
+
+``` javascript
+// example
+
+axios.post(`http://127.0.0.1:8000/articles/${articleId}/like/`)
+```
+
+⑥ Status Code 403 = 권한과 관련 ➡ CSRFToken
+
+axios를 통해 POST 요청을 넘기기 때문에 CSRF Token 재설정이 필요함.
+
+> [Django AJAX Request Docs.]: https://docs.djangoproject.com/en/3.1/ref/csrf/
+>
+> : header 안에 CSRF Token을 넣어서 요청과 함께 보내주어야 한다.
+
+위치로 header정보임을 파악하기 때문에 중간에 `{}` 라는 빈 object를 넣음으로써 3번째임을 인식할 수 있도록 위치를 지정한다.
+
+``` javascript
+ axios.post(`http://127.0.0.1:8000/articles/${articleId}/like/`, {}, {
+          headers: {
+            'X-CSRFToken': csrftoken
+          }}
+        )
+```
+
+⑦ views.py에서 설정 - 좋아요를 눌렀을 경우
+
+Boolean을 사용한다.
+
+``` python
+if article.like_users.filter(pk=user.pk).exists():
+        # if user in article.like_users.all():
+            article.like_users.remove(user)
+            liked = False
+        else:
+            article.like_users.add(user)
+            liked = True
+        like_status = {
+            'liked': liked,
+            'count': 
+            # article에 좋아요한 like_users의 수를 count() 한다.
+            article.like_users.count(),
+        }
+```
+
+⑧ promise 객체가 <u>성공한 경우</u>를 받아와야 하므로 `.then`을 사용한다.
+
+``` javascript
+.then(function (res) {
+          // console.log(res)
+          const count = res.data.count
+          const liked = res.data.liked
+          // console.log(count, liked)
+```
+
+⑨ `{{ article.pk }}`만 id로 적으면 결과적으로 숫자만 갖고 오는 셈이 되는데 숫자만 받아올 수 는 없으므로 앞에 `like-`를 덧붙인 것!
+
+``` javascript
+<i id="like-{{ article.pk }}" class="fas fa-heart fa-lg" style="color:black;"></i>
+```
+
+
 
 
 
