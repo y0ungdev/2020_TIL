@@ -11,7 +11,7 @@
     let x = 3
     ```
 
-  ![image-20201016190153078](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016190153078.png)
+  ![image-20201016190153078](TIL_201016_JavaScript Summary.assets/image-20201016190153078.png)
 
   ​			x가 이미 할당되어 있으므로 에러 발생.
 
@@ -28,9 +28,9 @@
     console.log(x)    // 1
     ```
 
-    ![image-20201016190459482](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016190459482.png)
-
     `{}` 안에서 설정된 값은 그 범위 내에서만 기능한다.
+
+    ![image-20201016190459482](TIL_201016_JavaScript Summary.assets/image-20201016190459482.png)
 
 - `const` : 값이 변하지 않는 상수를 설정하는 키워드
 
@@ -45,7 +45,7 @@
     const myFav 
     ```
 
-    ![image-20201016191502042](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016191502042.png)
+    ![image-20201016191502042](TIL_201016_JavaScript Summary.assets/image-20201016191502042.png)
 
   - `const`의 값은 재할당 및 재선언이 불가능하다
 
@@ -56,7 +56,9 @@
     myFav = 123 
     ```
 
-    ![image-20201016191712352](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016191712352.png)
+    
+
+    ![image-20201016191712352](TIL_201016_JavaScript Summary.assets/image-20201016191712352.png)
 
     - 재선언의 경우
 
@@ -64,11 +66,11 @@
     const myFav = 'movies'
     const myFav = 'movies'  let myFav = 'movies'    // Uncaught SyntaxError: Identifier 'myFav' has already been declared
     var myFav = 'movies'let myFav = 'movies'    // Uncaught SyntaxError: Identifier 'myFav' has already been declared
-    let myFav = 'movies' let myFav = 'movies'    // Uncaught SyntaxError: Identifier 'myFav' has already been declared
+    let myFav = 'movies' let myFav = 'movies'    // Uncaught SyntaxError: Identifier 'myFav' has already been ed
     
     ```
 
-    ![image-20201016191911972](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016191911972.png)
+    ![image-20201016191911972](TIL_201016_JavaScript Summary.assets/image-20201016191911972.png)
 
   - Block Scope를 갖고 있다.
 
@@ -80,10 +82,10 @@
       console.log(myFav)
     }
     
-    console.log(myFav) 
+    console.lomyFav) 
     ```
 
-    ![image-20201016192221088](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016192221088.png)
+    ![image-20201016192221088](TIL_201016_JavaScript Summary.assets/image-20201016192221088.png)
 
 - `var` : ES6 이전에 사용됐던 변수 선언 키워드
 
@@ -95,7 +97,7 @@
     console.log(num)
     ```
 
-    ![image-20201016192417336](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016192417336.png)
+    ![image-20201016192417336](TIL_201016_JavaScript Summary.assets/image-20201016192417336.png)
 
     변수 num에 할당된 값이 바뀐 것을 확인 가능하다!
 
@@ -236,7 +238,7 @@ JS의 경우 : 그냥 쓰면 됨 -> `me.name`
 >
 > -빈산쌤
 
-![image-20201016185022237](C:\Users\Keunyung\AppData\Roaming\Typora\typora-user-images\image-20201016185022237.png)
+![image-20201016185022237](TIL_201016_JavaScript Summary.assets/image-20201016185022237.png)
 
 마지막 줄 코드 Error
 
